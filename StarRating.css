@@ -1,0 +1,112 @@
+// Star Dimensions
+@spacer: 20px;
+@longest-points: 50px;
+@long-points: 40px;
+@normal-points: 35px;
+@small-points: 15px;
+
+// Position adjusts for different size stars
+@pos1: -22px;
+@pos2: -32px;
+@pos3: -57px;
+@after-adjust: 5px;
+
+// Colours
+@body-bg: #222;
+@star-normal: #555;
+@star-rated: #fa4;
+@star-hover: #fc6;
+
+@rating-bg: #333;
+
+/////////////////////////////////////
+//////// Star shape setup /////////
+/////////////////////////////////
+.star-five { // Left and lower right points
+	border-right:  @longest-points solid transparent;
+  border-bottom: @normal-points  solid @star-normal;
+  border-left:   @longest-points solid transparent;
+	position: relative;
+  margin: @spacer 0;
+  display: block;
+  width: 0;
+  height: 0;
+	-ms-transform:     rotate(35deg);
+  -webkit-transform: rotate(35deg);
+	transform:    rotate(35deg);
+}
+.star-five:before { // Top point
+  border-bottom: @long-points solid @star-normal;
+  border-left: @small-points solid transparent;
+  border-right: @small-points solid transparent;
+  position: absolute;
+	display: block;
+	width: 0;
+  height: 0;
+  top: @pos1;
+  left: @pos2;
+	-ms-transform:     rotate(-35deg);
+  -webkit-transform: rotate(-35deg);
+  transform:      rotate(-35deg);
+	content: '';
+}
+.star-five:after { // Right and lower left points
+  position: absolute;
+  display: block;
+	width: 0;
+  height: 0;
+  top: @after-adjust;
+  left: @pos3;
+  border-right: @longest-points solid transparent;
+  border-bottom: @normal-points solid @star-normal;
+  border-left: @longest-points solid transparent;
+	-ms-transform:     rotate(-70deg);
+  -webkit-transform: rotate(-70deg);
+  transform:      rotate(-70deg);
+  content: '';
+}
+
+/////////////////////////////////////
+/////// The cool stuff =) /////////
+/////////////////////////////////
+body { background-color: @body-bg; }
+
+// Just centring the rating element
+.centre {
+	display: block;
+	text-align: center;
+}
+// Base styles
+.rating {
+	display: inline-block;
+	padding: @spacer;
+	margin: 0;
+	background: @rating-bg;
+	cursor: pointer;
+	list-style-type: none;
+	
+	.star {
+		display: inline-block;
+		// Bit of margin / padding fiddling to avoid flickering with gaps between stars
+		margin: -@spacer/2;
+  	padding: @spacer/2;
+	}
+	
+	// The main magic
+	&:hover {
+		.star-five, .star-five:before, .star-five:after {
+			border-bottom-color: @star-rated;
+		}
+		
+		.star:hover {
+			.star-five {
+				border-bottom-color: @star-hover;
+				&:before, &:after { border-bottom-color: @star-hover; }
+			}
+			& ~ .star .star-five {
+				border-bottom-color: @star-normal;
+				&:before, &:after { border-bottom-color: @star-normal; }
+			}
+		}
+	}
+}
